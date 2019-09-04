@@ -15,7 +15,23 @@ public class Map {
         this.field = new Field[sizeX][sizeY];
     }
 
-    void buildMap() {
+    void buildMap(JPanel panel) {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                field[i][j] = new Field(map[i][j]);
+                int x = i + 1;
+                int y = j + 1;
+                panel.add(field[i][j]);
+                field[i][j].setLocation(j * 75, i * 75);
+            }
+        }
+    }
 
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
     }
 }

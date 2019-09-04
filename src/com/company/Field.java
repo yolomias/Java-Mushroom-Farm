@@ -1,8 +1,9 @@
 package com.company;
 
 import javax.swing.*;
+import java.util.Random;
 
-public abstract class Field extends JButton {
+public class Field extends JButton {
 
     //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras)
     private final char type;
@@ -17,10 +18,20 @@ public abstract class Field extends JButton {
         if (isDirection() ) this.setIcon(new ImageIcon(Class.class.getResource("/textures/field.png")));
         else if (getType() == 'B') setIcon(new ImageIcon(Class.class.getResource("/textures/tree.png")));
         else if (getType() == 'G') setIcon(new ImageIcon(Class.class.getResource("/textures/grass.png")));
-        else if (getType() == 'F') setIcon(new ImageIcon(Class.class.getResource("/textures/rock.png")));
-        else if (getType() == 'H') setIcon(new ImageIcon(Class.class.getResource("/textures/house.png")));
+        else if (getType() == 'D') {
+            Random rand = new Random();
+            int ranndom = rand.nextInt(3);
+            switch (ranndom) {
+                case 0: setIcon(new ImageIcon(Class.class.getResource("/textures/rock.png")));
+                break;
+                case 1: setIcon(new ImageIcon(Class.class.getResource("/textures/house.png")));
+                break;
+                case 2: setIcon(new ImageIcon(Class.class.getResource("/textures/house2.png")));
+                break;
+            }
+        }
         setSize(75, 75);
-
+        setBorderPainted(false);
     }
 
     public char getType() {

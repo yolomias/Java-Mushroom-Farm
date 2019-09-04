@@ -1,0 +1,17 @@
+MAP A
+
+D, D, D, B, D, D, S, D, D, B, D, B, D, D, D
+D, B, B, D, G, D, S, D, G, B, G, D, B, D, D
+G, D, G, B, G, G, S, B, G, G, D, G, G, G, G
+B, G, S, W, W, W, W, G, O, O, O, O, S, B, G
+G, G, S, G, G, G, B, G, N, G, G, G, S, G, G
+B, G, S, G, G, B, G, B, N, G, B, G, S, G, B
+G, B, O, O, O, O, O, O, N, G, D, B, S, B, D
+D, G, B, G, B, G, G, B, G, D, G, G, S, G, G
+G, D, G, B, G, D, B, G, G, G, B, G, S, G, D
+G, G, S, W, W, W, W, W, W, W, W, W, W, G, G
+D, G, S, G, B, G, G, B, G, G, B, G, G, D, G
+G, G, S, G, D, G, D, G, O, O, O, S, G, G, D
+D, G, S, G, B, G, G, O, N, G, G, O, S, G, G
+G, G, O, O, O, O, O, N, G, B, G, D, S, D, G
+D, G, G, G, B, B, G, B, G, D, G, D, S, D, D

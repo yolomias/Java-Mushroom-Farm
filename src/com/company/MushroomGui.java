@@ -6,6 +6,7 @@ public class MushroomGui {
     private JPanel panel1;
     private JPanel SpielfeldPanel;
     private JPanel HudPanel;
+    private JButton button1;
 
     static void gameStart() {
         /*
@@ -27,9 +28,9 @@ F, G, S, G, B, G, G, O, N, G, G, O, S, G, G
 G, G, O, O, O, O, O, N, G, B, G, H, S, H, G
 H, G, G, G, B, B, G, B, G, H, G, H, S, H, F
          */
-        char[][] a = {{'H', 'H', 'H', 'B', 'H', 'H', 'S', 'H', 'H', 'B', 'H', 'B', 'H', 'F', 'F'},
-                {'H', 'B', 'B', 'H', 'G', 'H', 'S', 'H', 'G', 'B', 'G', 'F', 'B', 'H', 'F'}};
+        char[][] a = {{'D', 'D', 'D', 'B', 'D', 'D', 'S', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
+                {'D', 'B', 'B', 'D', 'G', 'D', 'S', 'D', 'G', 'B', 'G', 'D', 'B', 'D', 'D'}};
         Map mapA = new Map(a);
-
+        //mapA.buildMap(this.SpielfeldPanel);
     }
 }
