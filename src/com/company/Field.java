@@ -4,11 +4,12 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Field extends JButton {
-
     //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras), D(Dynamisches Objekt)
     private final char type;
     private final boolean arable;
     private boolean treeCutted;
+    // n = none, G = Gomphus
+    private char defenderType;
 
 
     Field (char type){
@@ -30,6 +31,7 @@ public class Field extends JButton {
                 break;
             }
         }
+        //this.defenderType = 'n';
         addActionListener(e -> clicked() );
         setSize(50, 50);
         setBorderPainted(false);
@@ -53,7 +55,9 @@ public class Field extends JButton {
 
     //Fällt den Baum, wenn das Feld ein Baum ist und er noch nicht gefällt wurde
     public void cutTree() {
+        //Wenn Type Baum ist
         if (getType() == 'B') {
+            //Wenn Baum noch nicht gefällt wurde und ausreichend Geld vorhanden ist, dann fälle Baum
             if (!isTreeCutted() && Game.getCash() >= 200) {
                 setTreeCutted(true);
                 System.out.println("Baum wurde gefällt");
@@ -81,6 +85,14 @@ public class Field extends JButton {
         else if (getType() == 'B' && Game.getCash() < 200 && !isTreeCutted()) System.out.println("Du hast nicht genügend Knete um den Baum zu fällen!");
         if (isArable()) System.out.println("Feld ist bebaubar");
         else System.out.println("Feld ist nicht bebaubar");
+    }
+
+    public char getDefenderType() {
+        return defenderType;
+    }
+
+    public void setDefenderType(char defenderType) {
+        this.defenderType = defenderType;
     }
 
     private void setBackgroundImage (String path) {

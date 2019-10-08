@@ -1,8 +1,12 @@
 package com.company;
 
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main {
@@ -23,15 +27,6 @@ public class Main {
         gamepanel.setLayout(null);
         mainframe.add(gamepanel);
 
-        JButton scrollUp = new JButton("Scroll Up");
-        JButton scrollDown = new JButton("Scroll Down");
-        scrollUp.setBounds(1125, 0, 155, 20);
-        scrollDown.setBounds(1125, 665, 155, 20);
-        gamepanel.add(scrollUp);
-        gamepanel.add(scrollDown);
-
-        scrollDown.addActionListener(e -> gamepanel.setLocation(gamepanel.getX(), gamepanel.getY() - 10));
-
         char[][] a = {{'D', 'D', 'D', 'B', 'D', 'D', 'S', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
                 {'D', 'B', 'B', 'D', 'G', 'D', 'S', 'D', 'G', 'B', 'G', 'D', 'B', 'D', 'D'},
                 {'G', 'D', 'G', 'B', 'G', 'G', 'S', 'B', 'G', 'G', 'D', 'G', 'G', 'G', 'G'},
@@ -51,12 +46,20 @@ public class Main {
         Map mapA = new Map(a);
         mapA.buildMap(gamepanel);
 
-        mainframe.setVisible(true);
+
 
         Game neuesSpiel = new Game();
 
-        //MushroomGui.gameStart();
+        // Bedienung für Menü
+        JButton buyGomphus = new JButton("Kaufe Gomphus");
+        buyGomphus.setBounds(1000, 50, 100, 75);
+        buyGomphus.addActionListener(e -> buyDefender('G'));
+        gamepanel.add(buyGomphus);
+
+        mainframe.setVisible(true);
     }
+
+
 
     public static JFrame getMainframe() {
         return mainframe;
@@ -65,4 +68,19 @@ public class Main {
     public Image loadTexture(String path) throws IOException {
         return ImageIO.read(getClass().getResource(path));
     }
+
+    public static void buyDefender(char type) {
+        int price = 0;
+        switch (type) {
+            case 'G':
+                price = 100;
+                if (Game.getCash() >= price) {
+                    //TODO Kauf einbauen
+                } else System.out.println("Du hast nicht genügend Knete!");
+                break;
+
+        }
+    }
+
+
 }
