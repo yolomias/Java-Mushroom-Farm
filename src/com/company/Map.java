@@ -22,7 +22,7 @@ public class Map {
                 int x = i + 1;
                 int y = j + 1;
                 panel.add(field[i][j]);
-                field[i][j].setLocation(j * 75, i * 75);
+                field[i][j].setLocation(j * 50, i * 50);
             }
         }
     }

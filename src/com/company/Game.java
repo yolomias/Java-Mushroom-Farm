@@ -8,16 +8,16 @@ public class Game {
     private byte timer;
     private byte enemiesCount;
     private long score;
-    private long cash;
+    private static long cash;
     private byte healthRemaining;
     private List<Enemy> enemies;
 
-    public Game() {
+    Game() {
         this.wave = 0;
         this.timer = 60;
         this.enemiesCount = 0;
         this.score = 0;
-        this.cash = 200;
+        cash = 200;
         this.healthRemaining = 100;
         this.enemies = new ArrayList<>();
     }
@@ -54,12 +54,12 @@ public class Game {
         this.score = score;
     }
 
-    public long getCash() {
+    static long getCash() {
         return cash;
     }
 
-    public void setCash(long cash) {
-        this.cash = cash;
+    static void setCash(long money) {
+        cash = money;
     }
 
     public byte getHealthRemaining() {

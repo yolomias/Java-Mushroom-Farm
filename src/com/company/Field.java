@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Field extends JButton {
 
-    //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras)
+    //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras), D(Dynamisches Objekt)
     private final char type;
     private final boolean arable;
     private boolean treeCutted;
@@ -15,22 +15,23 @@ public class Field extends JButton {
         this.type = type;
         this.arable = getType() == 'G' || getType() == 'B';
         if (arable) this.treeCutted = false;
-        if (isDirection() ) this.setIcon(new ImageIcon(Class.class.getResource("/textures/field.png")));
-        else if (getType() == 'B') setIcon(new ImageIcon(Class.class.getResource("/textures/tree.png")));
-        else if (getType() == 'G') setIcon(new ImageIcon(Class.class.getResource("/textures/grass.png")));
+        if (isDirection() ) setBackgroundImage("/textures/fieldS.png");
+        else if (getType() == 'B') setBackgroundImage("/textures/treeS.png");
+        else if (getType() == 'G') setBackgroundImage("/textures/grassS.png");
         else if (getType() == 'D') {
             Random rand = new Random();
             int ranndom = rand.nextInt(3);
             switch (ranndom) {
-                case 0: setIcon(new ImageIcon(Class.class.getResource("/textures/rock.png")));
+                case 0: setBackgroundImage("/textures/rockS.png");
                 break;
-                case 1: setIcon(new ImageIcon(Class.class.getResource("/textures/house.png")));
+                case 1: setBackgroundImage("/textures/houseS.png");
                 break;
-                case 2: setIcon(new ImageIcon(Class.class.getResource("/textures/house2.png")));
+                case 2: setBackgroundImage("/textures/house2S.png");
                 break;
             }
         }
-        setSize(75, 75);
+        addActionListener(e -> clicked() );
+        setSize(50, 50);
         setBorderPainted(false);
     }
 
@@ -39,7 +40,7 @@ public class Field extends JButton {
     }
 
     public boolean isArable() {
-        return arable;
+        return getType() == 'G' || isTreeCutted();
     }
 
     public boolean isTreeCutted() {
@@ -53,7 +54,11 @@ public class Field extends JButton {
     //Fällt den Baum, wenn das Feld ein Baum ist und er noch nicht gefällt wurde
     public void cutTree() {
         if (getType() == 'B') {
-            if (!isTreeCutted()) setTreeCutted(true);
+            if (!isTreeCutted() && Game.getCash() >= 200) {
+                setTreeCutted(true);
+                System.out.println("Baum wurde gefällt");
+                this.setBackgroundImage("/textures/grassS.png");
+            }
         }
     }
 
@@ -62,5 +67,24 @@ public class Field extends JButton {
         return getType() == 'N' || getType() == 'O' || getType() == 'W' || getType() == 'S';
     }
 
+    private void clicked() {
+        System.out.println("");
+        //Abfrage wenn Feld Baum ist und fällbar ist
+        if (getType() == 'B' && Game.getCash() >= 200 && !isTreeCutted()) {
+            int solution = JOptionPane.showConfirmDialog(Main.getMainframe(), "Soll der Baum gefällt werden? (kostet 200)");
+            if (solution == JOptionPane.YES_OPTION) {
+                cutTree();
+                Game.setCash(Game.getCash() - 200);
+                System.out.println(Game.getCash());
+            }
+        }
+        else if (getType() == 'B' && Game.getCash() < 200 && !isTreeCutted()) System.out.println("Du hast nicht genügend Knete um den Baum zu fällen!");
+        if (isArable()) System.out.println("Feld ist bebaubar");
+        else System.out.println("Feld ist nicht bebaubar");
+    }
+
+    private void setBackgroundImage (String path) {
+        setIcon(new ImageIcon(Class.class.getResource(path)));
+    }
 
 }

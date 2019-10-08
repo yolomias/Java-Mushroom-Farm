@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public class Main {
 
+    private static JFrame mainframe = new JFrame("Java Mushroom Farm Defender");
+
     public static void main(String[] args) {
-        final int x = 1280, y = 720;
+        final int x = 1280, y = 800;
         // Erstellung des Mainframes
-        JFrame mainframe = new JFrame("Java Mushroom Farm Defender");
+
         mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainframe.setSize(x, y);
         mainframe.setResizable(false);
@@ -51,7 +53,13 @@ public class Main {
 
         mainframe.setVisible(true);
 
+        Game neuesSpiel = new Game();
+
         //MushroomGui.gameStart();
+    }
+
+    public static JFrame getMainframe() {
+        return mainframe;
     }
 
     public Image loadTexture(String path) throws IOException {
