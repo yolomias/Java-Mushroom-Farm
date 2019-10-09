@@ -11,15 +11,17 @@ public class Game {
     private static long cash;
     private byte healthRemaining;
     private List<Enemy> enemies;
+    private List<Defender> defenders;
 
     Game() {
         this.wave = 0;
         this.timer = 60;
         this.enemiesCount = 0;
         this.score = 0;
-        cash = 200;
+        cash = 2000;
         this.healthRemaining = 100;
         this.enemies = new ArrayList<>();
+        this.defenders = new ArrayList<>();
     }
 
     public byte getWave() {
@@ -58,8 +60,14 @@ public class Game {
         return cash;
     }
 
+    //Methode um den Kontostand zu ändern, alle Sachen die dadurch beeinflusst werden, sollen ebenso geändert werden
     static void setCash(long money) {
         cash = money;
+        //Anpassung des Labels welche den Kontostand anzeigt
+        Main.getCashLabel().setText("Cash: " + Game.getCash() + " $");
+        //Wenn Kontostand zu gering um Gomphos zu kaufen, deaktiviere es oder reaktiviere bei genügend Geld
+        if (cash < 100) Main.getBuyGomphus().setEnabled(false);
+        else Main.getBuyGomphus().setEnabled(true);
     }
 
     public byte getHealthRemaining() {
@@ -68,5 +76,13 @@ public class Game {
 
     public void setHealthRemaining(byte healthRemaining) {
         this.healthRemaining = healthRemaining;
+    }
+
+    public List<Defender> getDefenders() {
+        return defenders;
+    }
+
+    public void setDefenders(List<Defender> defenders) {
+        this.defenders = defenders;
     }
 }

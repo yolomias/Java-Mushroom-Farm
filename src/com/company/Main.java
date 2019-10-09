@@ -1,22 +1,23 @@
 package com.company;
 
-import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main {
-
+    //Variablen global und static damit aus anderen Klassen darauf zugegriffen werden kann
     private static JFrame mainframe = new JFrame("Java Mushroom Farm Defender");
+    private static Map mapA;
+    private static char buyType;
+    private static Game newGame;
+    private static JLabel cashLabel;
+    private static JButton buyGomphus;
 
     public static void main(String[] args) {
         final int x = 1280, y = 800;
-        // Erstellung des Mainframes
 
+        // Erstellung des Mainframes
         mainframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainframe.setSize(x, y);
         mainframe.setResizable(false);
@@ -27,6 +28,7 @@ public class Main {
         gamepanel.setLayout(null);
         mainframe.add(gamepanel);
 
+        //MAP A
         char[][] a = {{'D', 'D', 'D', 'B', 'D', 'D', 'S', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
                 {'D', 'B', 'B', 'D', 'G', 'D', 'S', 'D', 'G', 'B', 'G', 'D', 'B', 'D', 'D'},
                 {'G', 'D', 'G', 'B', 'G', 'G', 'S', 'B', 'G', 'G', 'D', 'G', 'G', 'G', 'G'},
@@ -43,19 +45,29 @@ public class Main {
                 {'G', 'G', 'O', 'O', 'O', 'O', 'O', 'N', 'G', 'B', 'G', 'D', 'S', 'D', 'G'},
                 {'D', 'G', 'G', 'G', 'B', 'B', 'G', 'B', 'G', 'D', 'G', 'D', 'S', 'D', 'D'}
         };
-        Map mapA = new Map(a);
+        mapA = new Map(a);
         mapA.buildMap(gamepanel);
 
+        //Initialisiere GAME, unteranderem dass die statischen Variablen der Klasse benutzt werden können
+        newGame = new Game();
 
+        // Bedienung für Menü (rechts neben der Map auf dem Spielfeld)
+        //Label was immer den Aktuellen Kontostand anzeigt
+        cashLabel = new JLabel("Cash: " + Game.getCash() + " $");
+        getCashLabel().setBounds(1000, 0, 150, 75);
 
-        Game neuesSpiel = new Game();
-
-        // Bedienung für Menü
-        JButton buyGomphus = new JButton("Kaufe Gomphus");
-        buyGomphus.setBounds(1000, 50, 100, 75);
+        //Ein Button mit dem der Gomphus gekauft wird
+        buyGomphus = new JButton();
+        buyGomphus.setBounds(1000, 70, 75, 75);
+        buyGomphus.setToolTipText("Buy Gomphus Defender");
+        buyGomphus.setIcon(new ImageIcon(Class.class.getResource("/textures/buyGomphus.png")));
         buyGomphus.addActionListener(e -> buyDefender('G'));
+
+        //Füge die Elemente dem gamepanel hinzu
+        gamepanel.add(getCashLabel());
         gamepanel.add(buyGomphus);
 
+        //Wenn alles fertig ist, mache den Frame sichtbar
         mainframe.setVisible(true);
     }
 
@@ -69,18 +81,63 @@ public class Main {
         return ImageIO.read(getClass().getResource(path));
     }
 
-    public static void buyDefender(char type) {
-        int price = 0;
-        switch (type) {
-            case 'G':
-                price = 100;
-                if (Game.getCash() >= price) {
-                    //TODO Kauf einbauen
-                } else System.out.println("Du hast nicht genügend Knete!");
-                break;
-
-        }
+    public static char getBuyType() {
+        return buyType;
     }
 
+    public static void setBuyType(char buyType) {
+        Main.buyType = buyType;
+    }
 
+    public static Map getMapA() {
+        return mapA;
+    }
+
+    public static void setMapA(Map mapA) {
+        Main.mapA = mapA;
+    }
+
+    public static JLabel getCashLabel() {
+        return cashLabel;
+    }
+
+    public static void setCashLabel(JLabel cashLabel) {
+        Main.cashLabel = cashLabel;
+    }
+
+    public static Game getNewGame() {
+        return newGame;
+    }
+
+    public static void setNewGame(Game newGame) {
+        Main.newGame = newGame;
+    }
+
+    public static JButton getBuyGomphus() {
+        return buyGomphus;
+    }
+
+    public static void setBuyGomphus(JButton buyGomphus) {
+        Main.buyGomphus = buyGomphus;
+    }
+
+    //Wenn auf einen der Kauf Buttons geklickt wird
+    public static void buyDefender(char type) {
+        //Erstelle Preis
+        int price = 0;
+        //Setze BuyType damit in der Klasse Field darauf zugegriffen werden kann
+        setBuyType(type);
+        //Setze den Preis anhand des Defender Type
+        switch (getBuyType()) {
+            case 'G': // G wie Gomphus
+                price = 100;
+                break;
+        }
+
+        //Wenn Guthaben größer ist als der Preis, schalte mögliche Fields frei
+        if (Game.getCash() >= price) {
+            mapA.makeMapActive(true);
+            System.out.println("Feld Aktiv");
+        } else System.out.println("Du hast nicht genügend Knete!");
+    }
 }

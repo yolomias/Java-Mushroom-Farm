@@ -6,10 +6,11 @@ import java.util.Random;
 public class Field extends JButton {
     //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras), D(Dynamisches Objekt)
     private final char type;
-    private final boolean arable;
+    private boolean arable;
     private boolean treeCutted;
     // n = none, G = Gomphus
     private char defenderType;
+    private boolean fieldActive;
 
 
     Field (char type){
@@ -31,7 +32,7 @@ public class Field extends JButton {
                 break;
             }
         }
-        //this.defenderType = 'n';
+        this.defenderType = 'n';
         addActionListener(e -> clicked() );
         setSize(50, 50);
         setBorderPainted(false);
@@ -41,8 +42,13 @@ public class Field extends JButton {
         return type;
     }
 
+    //Wenn Feld Grass ist oder der Baum gefällt wurde und das Feld noch frei ist
     public boolean isArable() {
-        return getType() == 'G' || isTreeCutted();
+        return (getType() == 'G' || isTreeCutted()) && getDefenderType() == 'n';
+    }
+
+    public void setArable(boolean arable) {
+        this.arable = arable;
     }
 
     public boolean isTreeCutted() {
@@ -72,10 +78,13 @@ public class Field extends JButton {
     }
 
     private void clicked() {
-        System.out.println("");
-        //Abfrage wenn Feld Baum ist und fällbar ist
+        System.out.println();
+        //Abfrage wenn Feld Baum ist und Baum nicht gefällt wurde
         if (getType() == 'B' && Game.getCash() >= 200 && !isTreeCutted()) {
-            int solution = JOptionPane.showConfirmDialog(Main.getMainframe(), "Soll der Baum gefällt werden? (kostet 200)");
+            //Breche vorherigen kauf eines Defenders ab
+            Main.getMapA().makeMapActive(false);
+            //Frage nach ob der Baum gefällt werden soll
+            int solution = JOptionPane.showConfirmDialog(Main.getMainframe(), "Will you cut down this fucking tree? (costs 200 $)");
             if (solution == JOptionPane.YES_OPTION) {
                 cutTree();
                 Game.setCash(Game.getCash() - 200);
@@ -83,7 +92,31 @@ public class Field extends JButton {
             }
         }
         else if (getType() == 'B' && Game.getCash() < 200 && !isTreeCutted()) System.out.println("Du hast nicht genügend Knete um den Baum zu fällen!");
-        if (isArable()) System.out.println("Feld ist bebaubar");
+
+        //Wenn Feld bebaubar ist
+        if (isArable()) {
+            System.out.println("Feld ist bebaubar");
+            //Wenn das Feld zum kauf freigegeben wurde
+            if (isFieldActive()) {
+                //Setze DefenderType indem der Typ vom aktuellen Kauf geholt wird
+                setDefenderType(Main.getBuyType());
+                // Feld soll nicht mehr bebaubar sein, da es jetzt bebaut wurde
+                this.setArable(false);
+                //Bebaue Feld mit dem aktuellen Kauf
+                switch (Main.getBuyType()) {
+                    case 'G':
+                        setBackgroundImage("/textures/gomphusS.png");
+                        Game.setCash(Game.getCash() - 100);
+                        Main.getNewGame().getDefenders().add(new Gomphus());
+                        //Schließe Kauf ab damit nicht weitere Felder bebaut werden können
+                        Main.getMapA().makeMapActive(false);
+                        System.out.println("Gomphus gekauft");
+                        break;
+                }
+                //Setze BuyType wieder auf none
+                Main.setBuyType('n');
+            }
+        }
         else System.out.println("Feld ist nicht bebaubar");
     }
 
@@ -95,7 +128,15 @@ public class Field extends JButton {
         this.defenderType = defenderType;
     }
 
-    private void setBackgroundImage (String path) {
+    public boolean isFieldActive() {
+        return fieldActive;
+    }
+
+    public void setFieldActive(boolean fieldActive) {
+        this.fieldActive = fieldActive;
+    }
+
+    void setBackgroundImage (String path) {
         setIcon(new ImageIcon(Class.class.getResource(path)));
     }
 
