@@ -13,6 +13,23 @@ public class Main {
     private static Game newGame;
     private static JLabel cashLabel;
     private static JButton buyGomphus;
+    private final static char[][] a = new char[][]{
+            {'D', 'D', 'D', 'B', 'D', 'D', 'r', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
+            {'D', 'B', 'B', 'D', 'G', 'D', 'S', 'D', 'G', 'B', 'G', 'D', 'B', 'D', 'D'},
+            {'G', 'D', 'G', 'B', 'G', 'G', 'S', 'B', 'G', 'G', 'D', 'G', 'G', 'G', 'G'},
+            {'B', 'G', 'S', 'W', 'W', 'W', 'W', 'G', 'O', 'O', 'O', 'O', 'S', 'B', 'G'},
+            {'G', 'G', 'S', 'G', 'G', 'G', 'B', 'G', 'N', 'G', 'G', 'G', 'S', 'G', 'G'},
+            {'B', 'G', 'S', 'G', 'G', 'B', 'G', 'B', 'N', 'G', 'B', 'G', 'S', 'G', 'B'},
+            {'G', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'N', 'G', 'D', 'B', 'S', 'B', 'D'},
+            {'D', 'G', 'B', 'G', 'B', 'G', 'G', 'B', 'G', 'D', 'G', 'G', 'S', 'G', 'G'},
+            {'G', 'D', 'G', 'B', 'G', 'D', 'B', 'G', 'G', 'G', 'B', 'G', 'S', 'G', 'D'},
+            {'G', 'G', 'S', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'G', 'G'},
+            {'D', 'G', 'S', 'G', 'B', 'G', 'G', 'B', 'G', 'G', 'B', 'G', 'G', 'D', 'G'},
+            {'G', 'G', 'S', 'G', 'D', 'G', 'D', 'G', 'O', 'O', 'O', 'S', 'G', 'G', 'D'},
+            {'D', 'G', 'S', 'G', 'B', 'G', 'G', 'O', 'N', 'G', 'G', 'O', 'S', 'G', 'G'},
+            {'G', 'G', 'O', 'O', 'O', 'O', 'O', 'N', 'G', 'B', 'G', 'D', 'S', 'D', 'G'},
+            {'D', 'G', 'G', 'G', 'B', 'B', 'G', 'B', 'G', 'D', 'G', 'D', 'e', 'D', 'D'}
+    };
 
     public static void main(String[] args) {
         final int x = 1280, y = 800;
@@ -23,28 +40,12 @@ public class Main {
         mainframe.setResizable(false);
 
         //Erstellung des Panels
-        JPanel gamepanel = new JPanel();
+        JLayeredPane gamepanel = new JLayeredPane();
         gamepanel.setBounds(x, y, x, y);
         gamepanel.setLayout(null);
         mainframe.add(gamepanel);
 
         //MAP A
-        char[][] a = {{'D', 'D', 'D', 'B', 'D', 'D', 'S', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
-                {'D', 'B', 'B', 'D', 'G', 'D', 'S', 'D', 'G', 'B', 'G', 'D', 'B', 'D', 'D'},
-                {'G', 'D', 'G', 'B', 'G', 'G', 'S', 'B', 'G', 'G', 'D', 'G', 'G', 'G', 'G'},
-                {'B', 'G', 'S', 'W', 'W', 'W', 'W', 'G', 'O', 'O', 'O', 'O', 'S', 'B', 'G'},
-                {'G', 'G', 'S', 'G', 'G', 'G', 'B', 'G', 'N', 'G', 'G', 'G', 'S', 'G', 'G'},
-                {'B', 'G', 'S', 'G', 'G', 'B', 'G', 'B', 'N', 'G', 'B', 'G', 'S', 'G', 'B'},
-                {'G', 'B', 'O', 'O', 'O', 'O', 'O', 'O', 'N', 'G', 'D', 'B', 'S', 'B', 'D'},
-                {'D', 'G', 'B', 'G', 'B', 'G', 'G', 'B', 'G', 'D', 'G', 'G', 'S', 'G', 'G'},
-                {'G', 'D', 'G', 'B', 'G', 'D', 'B', 'G', 'G', 'G', 'B', 'G', 'S', 'G', 'D'},
-                {'G', 'G', 'S', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'G', 'G'},
-                {'D', 'G', 'S', 'G', 'B', 'G', 'G', 'B', 'G', 'G', 'B', 'G', 'G', 'D', 'G'},
-                {'G', 'G', 'S', 'G', 'D', 'G', 'D', 'G', 'O', 'O', 'O', 'S', 'G', 'G', 'D'},
-                {'D', 'G', 'S', 'G', 'B', 'G', 'G', 'O', 'N', 'G', 'G', 'O', 'S', 'G', 'G'},
-                {'G', 'G', 'O', 'O', 'O', 'O', 'O', 'N', 'G', 'B', 'G', 'D', 'S', 'D', 'G'},
-                {'D', 'G', 'G', 'G', 'B', 'B', 'G', 'B', 'G', 'D', 'G', 'D', 'S', 'D', 'D'}
-        };
         mapA = new Map(a);
         mapA.buildMap(gamepanel);
 
@@ -67,8 +68,14 @@ public class Main {
         gamepanel.add(getCashLabel());
         gamepanel.add(buyGomphus);
 
+        getNewGame().getEnemies().add(new Eggy(20, 1, 15, 5, 'f', "Ja!",""));
+        gamepanel.add(getNewGame().getEnemies().get(0));
+        gamepanel.setLayer(getNewGame().getEnemies().get(0), 1);
+
         //Wenn alles fertig ist, mache den Frame sichtbar
         mainframe.setVisible(true);
+
+        getNewGame().getRunningGame().start();
     }
 
 
@@ -77,8 +84,9 @@ public class Main {
         return mainframe;
     }
 
-    public Image loadTexture(String path) throws IOException {
-        return ImageIO.read(getClass().getResource(path));
+    public static ImageIcon loadTexture(String path)/* throws IOException */{
+        return new ImageIcon(Class.class.getResource(path));
+       // return ImageIO.read(Main.class.getResource(path));
     }
 
     public static char getBuyType() {
@@ -139,5 +147,9 @@ public class Main {
             mapA.makeMapActive(true);
             System.out.println("Feld Aktiv");
         } else System.out.println("Du hast nicht genügend Knete!");
+    }
+
+    public static char[][] getA() {
+        return a;
     }
 }

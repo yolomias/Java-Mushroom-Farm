@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Field extends JButton {
-    //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras), D(Dynamisches Objekt)
+    //Feldtypen Char Legende N (Norden), O(Osten), W(westen), S(Sueden), B(Baum), H(Haus), F(Fels), G(Gras), D(Dynamisches Objekt), r(respawn), e(ende)
     private final char type;
     private boolean arable;
     private boolean treeCutted;
@@ -74,11 +74,11 @@ public class Field extends JButton {
 
     //Prüft nach ob das Feld ein Bewegungsfeld ist
     public boolean isDirection() {
-        return getType() == 'N' || getType() == 'O' || getType() == 'W' || getType() == 'S';
+        return getType() == 'N' || getType() == 'O' || getType() == 'W' || getType() == 'S' || getType() == 'r' || getType() == 'e';
     }
 
     private void clicked() {
-        System.out.println();
+        System.out.println("X: " + getX() + ", Y: " + getY());
         //Abfrage wenn Feld Baum ist und Baum nicht gefällt wurde
         if (getType() == 'B' && Game.getCash() >= 200 && !isTreeCutted()) {
             //Breche vorherigen kauf eines Defenders ab

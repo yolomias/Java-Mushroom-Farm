@@ -15,13 +15,14 @@ public class Map {
         this.field = new Field[sizeX][sizeY];
     }
 
-    void buildMap(JPanel panel) {
+    void buildMap(JLayeredPane panel) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 field[i][j] = new Field(map[i][j]);
                 int x = i + 1;
                 int y = j + 1;
                 panel.add(field[i][j]);
+                panel.setLayer(field[i][j], 0);
                 field[i][j].setLocation(j * 50, i * 50);
             }
         }
@@ -56,5 +57,31 @@ public class Map {
                 }
             }
         }
+    }
+
+    //
+    int[] findEnemyPosition(final int posX, final int posY) {
+        int[] positions = {0,0};
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if (field[i][j].getX() == posX && field[i][j].getY() == posY ) {
+                    positions[0] = i;
+                    positions[1] = j;
+                    return positions;
+                }
+            }
+        }
+        return positions;
+    }
+
+    int[] getRespawnPosition() {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if (map[i][j] == 'r') {
+                    return new int[]{field[i][j].getX(), field[i][j].getY()};
+                }
+            }
+        }
+        return new int[]{0,0};
     }
 }
