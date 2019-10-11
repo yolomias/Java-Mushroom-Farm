@@ -11,6 +11,7 @@ public class Game {
     private long score;
     private static long cash;
     private byte healthRemaining;
+    private List<Wave> waves;
     private List<Enemy> enemies;
     private List<Defender> defenders;
     private final int frameDelay;
@@ -23,20 +24,32 @@ public class Game {
         this.score = 0;
         cash = 2000;
         this.healthRemaining = 100;
+        this.waves = new ArrayList<>();
+        waves.add(new Wave(new Eggy(20, 2, 15, 5, 'f', "Ja!",""), 10, 'E'));
         this.enemies = new ArrayList<>();
         this.defenders = new ArrayList<>();
         this.frameDelay = 33;
 
         this.runningGame = new Thread(() -> {
-            long before;
+            long before = System.currentTimeMillis();;
             long difference;
             long sleepingTime;
-
-            before = System.currentTimeMillis();
+            long spawnDifference;
+            long spawnBefore = System.currentTimeMillis();
 
             while (true) {
-                for (Enemy en: getEnemies()) {
-                    en.move();
+                for (Wave wa: waves) {
+                    for (Enemy en: wa.getEnemies()) {
+                        if (en.isAddedToPanel() ) en.move();
+                        else {
+                            spawnDifference = spawnBefore - System.currentTimeMillis();
+                            if (spawnDifference <= -1250) {
+                                addEnemyToPanel(en);
+                                en.setAddedToPanel(true);
+                                spawnBefore = System.currentTimeMillis();
+                            }
+                        }
+                    }
                 }
 
                 difference = System.currentTimeMillis() - before;
@@ -49,6 +62,8 @@ public class Game {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                before = System.currentTimeMillis();
             }
         });
     }
@@ -74,8 +89,7 @@ public class Game {
     }
 
     public void setEnemiesCount(byte enemiesCount) {
-        this.enemiesCount = enemiesCount;
-    }
+        this.enemiesCount = enemiesCount;    }
 
     public List<Enemy> getEnemies() {
         return enemies;
@@ -129,5 +143,14 @@ public class Game {
 
     public Thread getRunningGame() {
         return runningGame;
+    }
+
+    public List getWaves() {
+        return waves;
+    }
+
+    void addEnemyToPanel(Enemy enemy) {
+        Main.getGamepanel().add(enemy);
+        Main.getGamepanel().setLayer(enemy, 1);
     }
 }

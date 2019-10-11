@@ -4,11 +4,13 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     //Variablen global und static damit aus anderen Klassen darauf zugegriffen werden kann
     private static JFrame mainframe = new JFrame("Java Mushroom Farm Defender");
     private static Map mapA;
+    private static JLayeredPane gamepanel;
     private static char buyType;
     private static Game newGame;
     private static JLabel cashLabel;
@@ -40,7 +42,7 @@ public class Main {
         mainframe.setResizable(false);
 
         //Erstellung des Panels
-        JLayeredPane gamepanel = new JLayeredPane();
+        gamepanel = new JLayeredPane();
         gamepanel.setBounds(x, y, x, y);
         gamepanel.setLayout(null);
         mainframe.add(gamepanel);
@@ -67,10 +69,6 @@ public class Main {
         //Füge die Elemente dem gamepanel hinzu
         gamepanel.add(getCashLabel());
         gamepanel.add(buyGomphus);
-
-        getNewGame().getEnemies().add(new Eggy(20, 1, 15, 5, 'f', "Ja!",""));
-        gamepanel.add(getNewGame().getEnemies().get(0));
-        gamepanel.setLayer(getNewGame().getEnemies().get(0), 1);
 
         //Wenn alles fertig ist, mache den Frame sichtbar
         mainframe.setVisible(true);
@@ -151,5 +149,9 @@ public class Main {
 
     public static char[][] getA() {
         return a;
+    }
+
+    public static JLayeredPane getGamepanel() {
+        return gamepanel;
     }
 }

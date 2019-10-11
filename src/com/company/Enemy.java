@@ -17,6 +17,7 @@ public class Enemy extends JLabel {
     private int nextPosY;
     private boolean nextPosReached;
     private char direction;
+    private boolean isAddedToPanel;
 
     public Enemy(int health, int speed, int money, int damage, char affinity, String name, String path) {
         this.health = health;
@@ -31,7 +32,7 @@ public class Enemy extends JLabel {
         this.nextPosX = 0;
         this.nextPosY = 0;
         this.nextPosReached = false;
-
+        this.isAddedToPanel = false;
     }
 
     public int getHealth() {
@@ -138,21 +139,21 @@ public class Enemy extends JLabel {
 
             switch (getDirection()) {
                 case 'N':
-                    setLocation(getX(), getY() - 1);
+                    setLocation(getX(), getY() - getSpeed());
                     break;
 
                 case 'O':
-                    setLocation(getX() + 1, getY());
+                    setLocation(getX() + getSpeed(), getY());
                     break;
 
                 case 'W':
-                    setLocation(getX() - 1, getY());
+                    setLocation(getX() - getSpeed(), getY());
                     break;
 
                 case 'S':
 
                 case 'r':
-                    setLocation(getX(), getY() + 1);
+                    setLocation(getX(), getY() + getSpeed());
                     break;
 
                 case 'e':
@@ -175,6 +176,14 @@ public class Enemy extends JLabel {
             }
 
         }
+    }
+
+    public boolean isAddedToPanel() {
+        return isAddedToPanel;
+    }
+
+    public void setAddedToPanel(boolean addedToPanel) {
+        isAddedToPanel = addedToPanel;
     }
 
 }
