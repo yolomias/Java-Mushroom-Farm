@@ -155,7 +155,7 @@ public class Enemy extends JLabel {
                 case 'r':
                     setLocation(getX(), getY() + getSpeed());
                     break;
-
+                //Schicke Enemy zurück auf Respawn Position und ziehe Lebenspunkte ab
                 case 'e':
                     final int[] respawnPosition = Main.getMapA().getRespawnPosition();
                     if (respawnPosition[0] != 0 || respawnPosition[1] != 0) {
@@ -163,6 +163,7 @@ public class Enemy extends JLabel {
                         setNextPosReached(true);
                         setNextPosX(0);
                         setNextPosY(0);
+                        Game.setHealthRemaining(Game.getHealthRemaining() - getDamage());
                     }
                     break;
             }

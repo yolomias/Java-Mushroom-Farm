@@ -14,6 +14,7 @@ public class Main {
     private static char buyType;
     private static Game newGame;
     private static JLabel cashLabel;
+    private static JLabel healthLabel;
     private static JButton buyGomphus;
     private final static char[][] a = new char[][]{
             {'D', 'D', 'D', 'B', 'D', 'D', 'r', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
@@ -57,7 +58,11 @@ public class Main {
         // Bedienung für Menü (rechts neben der Map auf dem Spielfeld)
         //Label was immer den Aktuellen Kontostand anzeigt
         cashLabel = new JLabel("Cash: " + Game.getCash() + " $");
-        getCashLabel().setBounds(1000, 0, 150, 75);
+        getCashLabel().setBounds(1000, 0, 150, 25);
+
+        //Label was die verbleibenden Lebenspunkte anzeigt
+        healthLabel = new JLabel("Health: " + Game.getCash());
+        getHealthLabel().setBounds(1000, 35, 150, 25);
 
         //Ein Button mit dem der Gomphus gekauft wird
         buyGomphus = new JButton();
@@ -68,6 +73,7 @@ public class Main {
 
         //Füge die Elemente dem gamepanel hinzu
         gamepanel.add(getCashLabel());
+        gamepanel.add(getHealthLabel());
         gamepanel.add(buyGomphus);
 
         //Wenn alles fertig ist, mache den Frame sichtbar
@@ -153,5 +159,9 @@ public class Main {
 
     public static JLayeredPane getGamepanel() {
         return gamepanel;
+    }
+
+    public static JLabel getHealthLabel() {
+        return healthLabel;
     }
 }

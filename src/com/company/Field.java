@@ -78,6 +78,7 @@ public class Field extends JButton {
     }
 
     private void clicked() {
+        System.out.println();
         System.out.println("X: " + getX() + ", Y: " + getY());
         //Abfrage wenn Feld Baum ist und Baum nicht gefällt wurde
         if (getType() == 'B' && Game.getCash() >= 200 && !isTreeCutted()) {
