@@ -61,7 +61,7 @@ public class Main {
         getCashLabel().setBounds(1000, 0, 150, 25);
 
         //Label was die verbleibenden Lebenspunkte anzeigt
-        healthLabel = new JLabel("Health: " + Game.getCash());
+        healthLabel = new JLabel("Health: " + Game.getHealthRemaining());
         getHealthLabel().setBounds(1000, 35, 150, 25);
 
         //Ein Button mit dem der Gomphus gekauft wird
