@@ -8,12 +8,14 @@ public class Wave {
     private List<Enemy> enemies;
     private final int enemyCount;
     private char defenderName;
+    private int index;
 
-    public Wave(/*byte currentWave, */Enemy en, int enemyCount, char defenderName) {
+    public Wave(/*byte currentWave, */Enemy en, int enemyCount, char defenderName, int index) {
         //this.currentWave = currentWave;
         this.enemies = new ArrayList<>();
         this.enemyCount = enemyCount;
         this.defenderName = defenderName;
+        this.index = index;
         addEnemies(en);
     }
 
@@ -31,7 +33,7 @@ public class Wave {
         }
     }
 
-    public List<Enemy> getEnemies() {
+    List<Enemy> getEnemies() {
         return enemies;
     }
 
@@ -45,5 +47,9 @@ public class Wave {
 
     public char getDefenderName() {
         return defenderName;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

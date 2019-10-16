@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private byte wave;
+    //private byte wave;
     private byte timer;
     private byte enemiesCount;
     private long score;
@@ -15,20 +15,22 @@ public class Game {
     private List<Wave> waves;
     private List<Enemy> enemies;
     private List<Defender> defenders;
+    private List<Shot> shots;
     private final int frameDelay;
     private Thread runningGame;
 
     Game() {
-        this.wave = 0;
+        //this.wave = 0;
         this.timer = 60;
         this.enemiesCount = 0;
         this.score = 0;
         cash = 2000;
         healthRemaining = 100;
         this.waves = new ArrayList<>();
-        waves.add(new Wave(new Eggy(20, 5, 15, 5, 'f', "Ja!",""), 10, 'E'));
+        waves.add(new Wave(new Eggy(20, 5, 15, 5, 'f', "Ja!",""), 10, 'E', 0));
         this.enemies = new ArrayList<>();
         this.defenders = new ArrayList<>();
+        this.shots = new ArrayList<>();
         this.frameDelay = 33;
 
         this.runningGame = new Thread(() -> {
@@ -41,7 +43,18 @@ public class Game {
             while (true) {
                 for (Wave wa: waves) {
                     for (Enemy en: wa.getEnemies()) {
-                        if (en.isAddedToPanel() ) en.move();
+                        if (en.isAddedToPanel() ) {
+                            en.move();
+
+                            for (Defender def: defenders) {
+                                def.attackEnemey(en);
+                            }
+
+                            if (en.getHealth() <= 0) {
+                                Main.getGamepanel().remove(en);
+                                wa.getEnemies().remove(en);
+                            }
+                        }
                         else {
                             spawnDifference = spawnBefore - System.currentTimeMillis();
                             if (spawnDifference <= -1250) {
@@ -51,6 +64,11 @@ public class Game {
                             }
                         }
                     }
+                }
+
+                for (Shot sh: shots) {
+                    System.out.println(shots.size());
+                    sh.hitEnemy();
                 }
 
                 difference = System.currentTimeMillis() - before;
@@ -69,13 +87,13 @@ public class Game {
         });
     }
 
-    public byte getWave() {
-        return wave;
-    }
-
-    public void setWave(byte wave) {
-        this.wave = wave;
-    }
+  //  public byte getWave() {
+  //      return wave;
+  //  }
+//
+  //  public void setWave(byte wave) {
+  //      this.wave = wave;
+  //  }
 
     public byte getTimer() {
         return timer;
@@ -152,12 +170,24 @@ public class Game {
         return runningGame;
     }
 
-    public List getWaves() {
+    public List<Wave> getWaves() {
         return waves;
+    }
+
+    public List<Shot> getShots() {
+        return shots;
     }
 
     void addEnemyToPanel(Enemy enemy) {
         Main.getGamepanel().add(enemy);
         Main.getGamepanel().setLayer(enemy, 1);
+    }
+
+    void addShot(Shot s) {
+        //TODO Probleme mit Shot, hängt sich auf wenn Health unter 0 sinkt und die Grafik erscheint erst gar nicht
+        shots.add(s);
+        System.out.println(shots);
+        Main.getGamepanel().add(s);
+        Main.getGamepanel().setLayer(s, 2);
     }
 }

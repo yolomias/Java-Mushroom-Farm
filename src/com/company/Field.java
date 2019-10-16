@@ -108,7 +108,7 @@ public class Field extends JButton {
                     case 'G':
                         setBackgroundImage("/textures/gomphusS.png");
                         Game.setCash(Game.getCash() - 100);
-                        Main.getNewGame().getDefenders().add(new Gomphus());
+                        Main.getNewGame().getDefenders().add(new Gomphus(getX(), getY()));
                         //Schließe Kauf ab damit nicht weitere Felder bebaut werden können
                         Main.getMapA().makeMapActive(false);
                         System.out.println("Gomphus gekauft");

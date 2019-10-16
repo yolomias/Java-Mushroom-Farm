@@ -2,7 +2,8 @@ package com.company;
 
 public class Gomphus extends Defender {
 
-    public Gomphus() {
+    public Gomphus(int posX, int posY) {
+        super(posX,posY);
         this.attack = 10;
         this.reload = 35;
         this.level = 1;
