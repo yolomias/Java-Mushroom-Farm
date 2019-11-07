@@ -7,11 +7,12 @@ public class Shot extends JLabel {
     private Defender attacker;
 
     public Shot(int posX, int posY, Enemy target, Defender attacker) {
-        this.setLocation(posX, posY);
+        setBounds(posX, posY, 8,8);
+        //this.setLocation(posX, posY);
         this.target = target;
         this.attacker = attacker;
         setIcon(Main.loadTexture("/textures/shotS.png"));
-        System.out.println("ja!");
+      //  System.out.println("ja!");
     }
 
     boolean hitEnemy() {
