@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Wave {
-    private byte currentWave;
     private List<Enemy> enemies;
     private final int enemyCount;
     private char defenderName;
     private int index;
+    private boolean active;
 
     public Wave(/*byte currentWave, */Enemy en, int enemyCount, char defenderName, int index) {
         //this.currentWave = currentWave;
@@ -16,6 +16,7 @@ public class Wave {
         this.enemyCount = enemyCount;
         this.defenderName = defenderName;
         this.index = index;
+        this.active = false;
         addEnemies(en);
     }
 
@@ -31,6 +32,7 @@ public class Wave {
             }
             enemies.add(ene);
         }
+        setActive(false);
     }
 
     List<Enemy> getEnemies() {
@@ -51,5 +53,13 @@ public class Wave {
 
     public int getIndex() {
         return index;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -7,9 +7,10 @@ import java.util.List;
 
 public class Game {
     //private byte wave;
-    private byte timer;
-    private byte enemiesCount;
+    private static int timer;
+    private int enemiesCount;
     private long score;
+    private int currentWave;
     private static long cash;
     private static int healthRemaining;
     private List<Wave> waves;
@@ -18,16 +19,20 @@ public class Game {
     private List<Shot> shots;
     private final int frameDelay;
     private Thread runningGame;
+    private Thread runningTimer;
 
     Game() {
         //this.wave = 0;
-        this.timer = 60;
-        this.enemiesCount = 0;
+        timer = 60;
         this.score = 0;
-        cash = 2000;
+        cash = 200;
         healthRemaining = 100;
         this.waves = new ArrayList<>();
         waves.add(new Wave(new Eggy(20, 5, 15, 5, 'f', "Ja!",""), 10, 'E', 0));
+        waves.add(new Wave(new Eggy(30, 2, 20, 7, 'f', "Ja!2",""), 15, 'E', 1));
+        this.currentWave = 0;
+        this.enemiesCount = getWaves().get(currentWave).getEnemies().size();
+        nextRound();
         this.enemies = new ArrayList<>();
         this.defenders = new ArrayList<>();
         this.shots = new ArrayList<>();
@@ -41,34 +46,46 @@ public class Game {
             long spawnBefore = System.currentTimeMillis();
 
             while (true) {
+                List<Enemy> killedEnemies = new ArrayList<>();
                 for (Wave wa: waves) {
-                    for (Enemy en: wa.getEnemies()) {
-                        if (en.isAddedToPanel() ) {
-                            en.move();
+                    if (wa.isActive()) {
+                        for (Enemy en : wa.getEnemies()) {
+                            if (en.isAddedToPanel()) {
+                                en.move();
 
-                            for (Defender def: defenders) {
-                                def.attackEnemey(en);
-                            }
+                                for (Defender def : defenders) {
+                                    def.attackEnemey(en);
+                                }
 
-                            if (en.getHealth() <= 0) {
-                                Main.getGamepanel().remove(en);
-                                wa.getEnemies().remove(en);
-                            }
-                        }
-                        else {
-                            spawnDifference = spawnBefore - System.currentTimeMillis();
-                            if (spawnDifference <= -1250) {
-                                addEnemyToPanel(en);
-                                en.setAddedToPanel(true);
-                                spawnBefore = System.currentTimeMillis();
+                                if (en.getHealth() <= 0) {
+                                    killedEnemies.add(en);
+                                }
+                            } else {
+                                spawnDifference = spawnBefore - System.currentTimeMillis();
+                                if (spawnDifference <= -1250) {
+                                    addEnemyToPanel(en);
+                                    en.setAddedToPanel(true);
+                                    spawnBefore = System.currentTimeMillis();
+                                }
                             }
                         }
                     }
                 }
+                List<Shot> hittedShots = new ArrayList<>();
+                for (Shot sh: getShots()) {
+                    if (sh.hitEnemy()) hittedShots.add(sh);
+                }
 
-                for (Shot sh: shots) {
-                    System.out.println(shots.size());
-                    sh.hitEnemy();
+                for (Shot s: hittedShots) {
+                    Main.getGamepanel().remove(s);
+                    getShots().remove(s);
+                }
+
+                for (Enemy deadEn: killedEnemies) {
+                    for (Wave wa: getWaves()) {
+                        Main.getGamepanel().remove(deadEn);
+                        wa.getEnemies().remove(deadEn);
+                    }
                 }
 
                 difference = System.currentTimeMillis() - before;
@@ -81,8 +98,24 @@ public class Game {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Main.getMainframe().repaint();
 
                 before = System.currentTimeMillis();
+            }
+        });
+
+        runningTimer = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                setTimer(getTimer() - 1);
+                if (getTimer() <= 1) {
+                    nextRound();
+                    setTimer(20);
+                }
             }
         });
     }
@@ -95,19 +128,20 @@ public class Game {
   //      this.wave = wave;
   //  }
 
-    public byte getTimer() {
+    public static int getTimer() {
         return timer;
     }
 
-    public void setTimer(byte timer) {
-        this.timer = timer;
+    public static void setTimer(int time) {
+        timer = time;
+        Main.getTimerLabel().setText("Timer: " + getTimer());
     }
 
-    public byte getEnemiesCount() {
+    public int getEnemiesCount() {
         return enemiesCount;
     }
 
-    public void setEnemiesCount(byte enemiesCount) {
+    public void setEnemiesCount(int enemiesCount) {
         this.enemiesCount = enemiesCount;    }
 
     public List<Enemy> getEnemies() {
@@ -170,6 +204,10 @@ public class Game {
         return runningGame;
     }
 
+    public Thread getRunningTimer() {
+        return runningTimer;
+    }
+
     public List<Wave> getWaves() {
         return waves;
     }
@@ -184,10 +222,31 @@ public class Game {
     }
 
     void addShot(Shot s) {
-        //TODO Probleme mit Shot, hängt sich auf wenn Health unter 0 sinkt und die Grafik erscheint erst gar nicht
+        //TODO Probleme mit Shot, hängt sich auf wenn Health unter 0 sinkt
         shots.add(s);
-        System.out.println(shots);
+        //System.out.println(shots);
         Main.getGamepanel().add(s);
         Main.getGamepanel().setLayer(s, 2);
+    }
+
+    public int getCurrentWave() {
+        return currentWave;
+    }
+
+    public void setCurrentWave(int currentWave) {
+        this.currentWave = currentWave;
+    }
+
+    private void nextRound() {
+        if (getEnemiesCount() <= 0){
+            //TODO Biete über einen Button an, die nächste Welle jetzt schon zu starten
+        }
+        if (getWaves().size()  > currentWave) {
+            getWaves().get(getCurrentWave()).setActive(true);
+            setCurrentWave(getCurrentWave() + 1);
+            setEnemiesCount(getEnemiesCount() + waves.get(currentWave).getEnemies().size());
+            System.out.println("Welle Erhöht");
+        }
+        else System.out.println("Keine weiteren Wellen mehr vorhanden");
     }
 }

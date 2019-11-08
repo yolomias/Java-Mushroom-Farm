@@ -91,14 +91,14 @@ public abstract class Defender {
                         int range2, int sell1, int sell2) {
         if (getLevel() == 1 && Game.getCash() >= price1) {
             setAttack(getAttack() + attack1);
-            setReload(getReload() - reload1);
+            setReload(getReload() + reload1);
             setRange(getRange() + range1);
             setSellPrice(sell1);
             setLevel(2);
         }
         else if (getLevel() == 2 && Game.getCash() >= price2) {
             setAttack(getAttack() + attack2);
-            setReload(getReload() - reload2);
+            setReload(getReload() + reload2);
             setRange(getRange() + range2);
             setSellPrice(sell2);
             setLevel(3);

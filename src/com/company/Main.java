@@ -15,6 +15,7 @@ public class Main {
     private static Game newGame;
     private static JLabel cashLabel;
     private static JLabel healthLabel;
+    private static JLabel timerLabel;
     private static JButton buyGomphus;
     private final static char[][] a = new char[][]{
             {'D', 'D', 'D', 'B', 'D', 'D', 'r', 'D', 'D', 'B', 'D', 'B', 'D', 'D', 'D'},
@@ -64,9 +65,13 @@ public class Main {
         healthLabel = new JLabel("Health: " + Game.getHealthRemaining());
         getHealthLabel().setBounds(1000, 35, 150, 25);
 
+        //Label was den aktuellen Timer der Welle anzeigt
+        timerLabel = new JLabel("Timer: " + Game.getTimer());
+        getTimerLabel().setBounds(1000, 70, 150, 25);
+
         //Ein Button mit dem der Gomphus gekauft wird
         buyGomphus = new JButton();
-        buyGomphus.setBounds(1000, 70, 75, 75);
+        buyGomphus.setBounds(1000, 105, 75, 75);
         buyGomphus.setToolTipText("Buy Gomphus Defender");
         buyGomphus.setIcon(new ImageIcon(Class.class.getResource("/textures/buyGomphus.png")));
         buyGomphus.addActionListener(e -> buyDefender('G'));
@@ -74,12 +79,14 @@ public class Main {
         //Füge die Elemente dem gamepanel hinzu
         gamepanel.add(getCashLabel());
         gamepanel.add(getHealthLabel());
+        gamepanel.add(timerLabel);
         gamepanel.add(buyGomphus);
 
         //Wenn alles fertig ist, mache den Frame sichtbar
         mainframe.setVisible(true);
 
         getNewGame().getRunningGame().start();
+        getNewGame().getRunningTimer().start();
     }
 
 
@@ -163,5 +170,9 @@ public class Main {
 
     public static JLabel getHealthLabel() {
         return healthLabel;
+    }
+
+    public static JLabel getTimerLabel() {
+        return timerLabel;
     }
 }

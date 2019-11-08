@@ -42,15 +42,17 @@ public class Enemy extends JLabel {
     public void setHealth(int health) {
         this.health = health;
         if (getHealth() <= 0) {
-            Main.getGamepanel().remove(this);
-            int index = 0;
-            for (Wave wa: Main.getNewGame().getWaves()) {
-                if (wa.getEnemies().contains(this)) {
-                    index = wa.getIndex();
-                    break;
-                }
-            }
-            Main.getNewGame().getWaves().get(index).getEnemies().remove(this);
+            //Main.getGamepanel().remove(this);
+           // int index = 0;
+           // for (Wave wa: Main.getNewGame().getWaves()) {
+           //     if (wa.getEnemies().contains(this)) {
+           //         index = wa.getIndex();
+           //         break;
+           //     }
+           // }
+            //Main.getNewGame().getWaves().get(index).getEnemies().remove(this);
+
+            Game.setCash(Game.getCash() + getMoney());
         }
     }
 
